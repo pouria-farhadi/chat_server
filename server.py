@@ -40,17 +40,6 @@ class ChatServer(rpc.ChatServerServicer):
                 n.message = data['message']
                 yield n
                 last_timestamp = data["timestamp"]
-        # while True:
-        #     item = self.listening.get_message()
-        #     if item:
-        #         if type(item['data']) != int:
-        #             data = json.loads(item['data'])
-        #             n = chat.Note()
-        #             n.name = data['user']
-        #             n.message = data['message']
-        #             yield n
-        #         else:
-        #             yield chat.Empty()
 
     def SendNote(self, request: chat.Note, context):
         """
@@ -60,7 +49,6 @@ class ChatServer(rpc.ChatServerServicer):
         :param context:
         :return:
         """
-        # Add it to the chat history
         self.sending.publish('chat', json.dumps(
             {'message': request.message, 'user': request.name, 'timestamp': str(datetime.datetime.now())}))
         return chat.Empty()
